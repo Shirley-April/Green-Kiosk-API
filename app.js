@@ -1,12 +1,30 @@
 const express = require("express")
 
 const app = express()
+let dotenv = require('dotenv').config()
+
+const productRoutes = require("./routes/product")
+
+
+// Set up mongoose connection
+const mongoose = require("mongoose");
+mongoose.set('strictQuery', false);
+const mongoDB = process.env.LOCAL_DB
+
+main().catch(err => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB);
+  console.log("DB connected successfully!");
+}
+
+app.use(productRoutes)
 
 app.get("/", (req, res) => {
-    res.send("Home route")
+    console.log("PORT",process.env.PORT);
+    res.send("hello")
 })
 
-const PORT = 3000
+const PORT = process.env.PORT || 3005
 app.listen(PORT, () => {
-    console.log(`App is running on port: ${3000}`);
+    console.log(`App is running on port: ${PORT}`);
 })
