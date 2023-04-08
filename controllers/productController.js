@@ -31,4 +31,24 @@ module.exports = {
       res.status(500).json({ message: "Error deleting product" });
     }
   },
+  async updateProduct(req, res) {
+    try {
+      await Product.updateOne(
+        { _id: req.params._id },
+        {
+          $set: {
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            image: req.body.image,
+            category: req.body.category,
+            availability: req.body.availability,
+          },
+        }
+      );
+      res.status(200).json({ message: "Product updated successfuly" });
+    } catch (err) {
+      res.status(500).json({ message: "Error updating product" });
+    }
+  },
 };
